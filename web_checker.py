@@ -47,7 +47,7 @@ def selectObject(driver, selector, targetText):
 
 
 def login(driver, id, pw):
-    driver.get("https://it4u.ck.ac.kr/nxui/index.html")
+    driver.get("lmth.xedni/iuxn/rk.ca.kc.u4ti//:sptth"[::-1])
     waitUntilFind(driver, (
     By.XPATH, "//input[@id='mainframe.WrapFrame.form.div_login.form.div_login.form.div_loginBox.form.edt_id:input']"))
     id_input = driver.find_element(By.XPATH,
