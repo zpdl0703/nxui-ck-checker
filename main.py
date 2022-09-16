@@ -8,7 +8,6 @@ from selenium.webdriver.common.by import By
 import web_checker
 
 
-
 def IsWeekend():
     d = datetime.now(timezone('Asia/Seoul'))
     if d.weekday() > 4:
@@ -17,7 +16,6 @@ def IsWeekend():
 
 
 def GetReport():
-
     if IsWeekend():
         return "오늘은 쉬었습니다."
 
@@ -29,6 +27,7 @@ def GetReport():
         result += AppendReportStr("report_data/", fileName)
 
     return result
+
 
 def AppendReportStr(path, fileName):
     file = open(path + fileName, "r", encoding='utf8')
@@ -129,11 +128,19 @@ if __name__ == '__main__':
         str_length = int(''.join([i for i in str_length_str if i.isdigit()]))
         print("[총 " + str(str_length) + "자]")
 
+    driver.implicitly_wait(1)
     print("==SAVING...==")
     # 저장
     web_checker.clickObject(driver, "//div[@id='" + web_checker.nxuiHeader()
                             + "form.div_work.form.div_detail.form.btn_save']")
 
+    print("Result = " + web_checker.waitUntilFind(driver, (
+        By.XPATH, "//div[contains(@id, '.form.btn_msg:icontext')]")).text)
+
+    web_checker.waitUntilFind(driver, (
+        By.XPATH, "//div[contains(@id, '.form.btn_yes:icontext')]")).click()
+
     print("==END==")
+    time.sleep(2)
 
     web_checker.close(driver)
