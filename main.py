@@ -121,7 +121,7 @@ if __name__ == '__main__':
         print(result_str)
         web_checker.insertFormNxui(driver, "//textarea[@id='" + web_checker.nxuiHeader()
                                    + "form.div_work.form.div_detail.form.tar_pracCont"
-                                     ":textarea']", GetReport())
+                                     ":textarea']", result_str)
         time.sleep(1)
         str_length_str = web_checker.getObject(driver, "//div[@id='" + web_checker.nxuiHeader()
                                                + "form.div_work.form.div_detail.form.stt_cont"
