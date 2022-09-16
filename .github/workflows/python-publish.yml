@@ -29,7 +29,7 @@ jobs:
     - uses: actions/checkout@v3
     - uses: actions/checkout@v3
       with:
-        ref: 'my'
+        ref: 'report-data'
         path: 'my'
     - name: Set up python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
