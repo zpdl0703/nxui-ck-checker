@@ -61,7 +61,7 @@ if __name__ == '__main__':
     print("==GO TO MENU==")
     # 메뉴 이동
     web_checker.waitUntilFind(driver, (
-        By.XPATH, "//div[@id='mainframe.WrapFrame.form.div_top.form.div_top.form.mnu_top.item0:text']")).click()
+        By.XPATH, "//div[@id='mainframe.WrapFrame.form.div_top.form.div_top.form.mnu_top.item0']")).click()
     web_checker.waitUntilFind(driver, (By.XPATH,
                                        "//div[@id='mainframe.WrapFrame.form.div_section.form.div_sub.form.tab_menu"
                                        ".Tabpage1.form.grd_menu.body.gridrow_6.cell_6_0.celltreeitem.treeitemtext"
