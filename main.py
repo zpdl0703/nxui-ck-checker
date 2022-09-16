@@ -61,11 +61,10 @@ if __name__ == '__main__':
     print("==GO TO MENU==")
     # 메뉴 이동
     web_checker.waitUntilFind(driver, (
-        By.XPATH, "//div[@id='mainframe.WrapFrame.form.div_top.form.div_top.form.mnu_top.item0']")).click()
+        By.XPATH, "//div[@id='mainframe.WrapFrame.form.div_top.form.div_top.form.btn_siteMap']")).click()
     web_checker.waitUntilFind(driver, (By.XPATH,
-                                       "//div[@id='mainframe.WrapFrame.form.div_section.form.div_sub.form.tab_menu"
-                                       ".Tabpage1.form.grd_menu.body.gridrow_6.cell_6_0.celltreeitem.treeitemtext"
-                                       ":text']")).click()
+                                       "//div[@id='mainframe.sitemap.form.div_wrap.form.Div_2842453_0.form.grd_menu"
+                                       ".body.gridrow_0.cell_0_0:text']")).click()
     # 메뉴 유효성 확인
     web_checker.waitUntilFind(driver, (By.XPATH,
                                        "//div[@id='" + web_checker.nxuiHeader()

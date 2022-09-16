@@ -129,7 +129,7 @@ def waitUntilFind(driver, selector):
     result = None
     try:
         result = WebDriverWait(driver, 20).until(
-            EC.presence_of_element_located(selector))
+            EC.visibility_of_element_located(selector))
     finally:
         return result
     return result
