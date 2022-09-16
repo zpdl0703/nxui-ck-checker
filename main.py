@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 import web_checker
 
 
+
 def IsWeekend():
     d = datetime.now(timezone('Asia/Seoul'))
     if d.weekday() > 4:
@@ -16,10 +17,11 @@ def IsWeekend():
 
 
 def GetReport():
+
     if IsWeekend():
         return "오늘은 쉬었습니다."
 
-    reportList = os.listdir("report_data")
+    reportList = sorted(os.listdir("report_data"))
 
     result = ""
 
@@ -28,11 +30,10 @@ def GetReport():
 
     return result
 
-
 def AppendReportStr(path, fileName):
     file = open(path + fileName, "r", encoding='utf8')
     fileNameSplit = fileName.split(".")
-    result = "[" + fileNameSplit[1] + "]\n"
+    result = fileNameSplit[1] + "\n"
     strings = file.readlines()
     file.close()
 
