@@ -8,6 +8,13 @@ import pyperclip
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+nxui_h = "mainframe.WrapFrame.form.div_section.form.div_content.form.div_work.form."
+nxui_w = "w_2842479."
+
+
+def nxuiHeader():
+    return nxui_h + nxui_w
+
 
 def getDriver(url):
     # 드라이버 로딩
@@ -37,19 +44,43 @@ def setUrl(driver, url):
 
 
 def clickObject(driver, selector):
-    button = driver.find_element(selector)
+    button = driver.find_element(By.XPATH, selector)
     button.click()
 
 
 def selectObject(driver, selector, targetText):
-    select = Select(driver.find_element(selector))
+    select = Select(driver.find_element(By.XPATH, selector))
     select.select_by_visible_text(targetText)
+
+
+def getObject(driver, selector):
+    select = driver.find_element(By.XPATH, selector)
+    return select
+
+
+def selectObjectNxui(driver, selector, targetText):
+    selectBox = driver.find_element(By.XPATH, selector)
+    selectBox.click()
+
+    selectObj = None
+    selectIndex = "0"
+
+    if "출석" in targetText:
+        selectIndex = "1"
+    if "휴무" in targetText:
+        selectIndex = "3"
+    selectObj = driver.find_element(By.XPATH, "//div[@id='" + nxuiHeader()
+                                    + "form.div_work.form.div_detail.form"
+                                      ".cmb_atdabsCd.combolist.item_" + selectIndex + "']")
+
+    selectObj.click()
 
 
 def login(driver, id, pw):
     driver.get("lmth.xedni/iuxn/rk.ca.kc.u4ti//:sptth"[::-1])
     waitUntilFind(driver, (
-    By.XPATH, "//input[@id='mainframe.WrapFrame.form.div_login.form.div_login.form.div_loginBox.form.edt_id:input']"))
+        By.XPATH,
+        "//input[@id='mainframe.WrapFrame.form.div_login.form.div_login.form.div_loginBox.form.edt_id:input']"))
     id_input = driver.find_element(By.XPATH,
                                    "//input[@id='mainframe.WrapFrame.form.div_login.form.div_login.form.div_loginBox"
                                    ".form.edt_id:input']")
@@ -70,19 +101,16 @@ def login(driver, id, pw):
 
 
 def insertForm(driver, selector, value):
-    answer = driver.find_element(selector)
+    answer = driver.find_element(By.XPATH, selector)
+    answer.clear()
     answer.send_keys(value)
 
 
-def submit(driver):
-    print("제출하기")
-    submit_raw = driver.find_element_by_css_selector("button[menu='submitBtn']")
-    driver.execute_script("arguments[0].scrollIntoView();", submit_raw)
-    submit_raw.click()
-
-
-def isSubmit(driver):
-    return driver.find_element_by_class_name('finishMessage').get_attribute("textContent")
+def insertFormNxui(driver, selector, value):
+    answer = driver.find_element(By.XPATH, selector)
+    answer.click()
+    answer.clear()
+    answer.send_keys(value)
 
 
 def acceptAlert(driver):

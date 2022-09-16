@@ -54,9 +54,11 @@ if __name__ == '__main__':
     url = strings[0]
     driver = web_checker.getDriver(url)
 
+    print("==TRY LOGIN==")
     web_checker.login(driver, strings[1].strip(), strings[2].strip())
     driver.implicitly_wait(1)
 
+    print("==GO TO MENU==")
     # 메뉴 이동
     web_checker.waitUntilFind(driver, (
         By.XPATH, "//div[@id='mainframe.WrapFrame.form.div_top.form.div_top.form.mnu_top.item0:text']")).click()
@@ -66,30 +68,72 @@ if __name__ == '__main__':
                                        ":text']")).click()
     # 메뉴 유효성 확인
     web_checker.waitUntilFind(driver, (By.XPATH,
-                                       "//div[@id='mainframe.WrapFrame.form.div_section.form.div_content.form"
-                                       ".div_work.form.w_2842479.form.div_work.form.div_detail.form.btn_save:icontext"
-                                       "']"))
+                                       "//div[@id='" + web_checker.nxuiHeader()
+                                       + "form.div_work.form.div_detail.form.btn_save:icontext"
+                                         "']"))
     driver.implicitly_wait(1)
     time.sleep(2)
 
     now = datetime.now(timezone('Asia/Seoul'))
-    now_str = now.strftime("%Y%m%d")
+    now_str = now.strftime("%m/%d")
     isWeekend = IsWeekend()
 
+    print("==SELECT TODAY (1/2)==")
+    # 캘린더 확인
+    cal = driver.find_element(By.XPATH,
+                              "//div[@id='" + web_checker.nxuiHeader()
+                              + "form.div_work.form.grd_main.body']")
     driver.implicitly_wait(1)
-    time.sleep(2)
-    web_checker.clickObject(driver, "td[id='" + now_str + "']")
-    time.sleep(1)
-    web_checker.selectObject(driver, "select[id='pims_stat']", "휴무" if isWeekend else "출석")
-    time.sleep(1)
-    web_checker.insertForm(driver, "textarea[id='tody_rslt']", GetReport())
-    time.sleep(1)
-    web_checker.clickObject(driver, "button[id='btnSave']")
-    time.sleep(1)
-    web_checker.acceptAlert(driver)
-    time.sleep(1)
-    web_checker.acceptAlert(driver)
 
-    time.sleep(3)
+    print("==SELECT TODAY (2/2)==")
+    # 오늘 날짜 확인 및 클릭
+    today = cal.find_element(By.XPATH, "//div[@aria-label='" + now_str + " ']")
+    today.click()
+    driver.implicitly_wait(1)
+
+    print("==CHECK INFOS (1/4)==")
+    # 출결상태
+    web_checker.selectObjectNxui(driver,
+                                 "//div[@id='" + web_checker.nxuiHeader()
+                                 + "form.div_work.form.div_detail.form.cmb_atdabsCd']",
+                                 "휴무" if isWeekend else "출석")
+    print("==CHECK INFOS (2/4)==")
+    # 실습 부서
+    web_checker.insertFormNxui(driver, "//input[@id='" + web_checker.nxuiHeader()
+                               + "form.div_work.form.div_detail.form.edt_pracDeptNm"
+                                 ":input']", "딜펀"[::-1])
+    print("==CHECK INFOS (3/4)==")
+    # 실습 담당자
+    userName = web_checker.getObject(driver, "//div[@id='" + web_checker.nxuiHeader()
+                                     + "form.div_work.form.grd_info.body.gridrow_0.cell_0_5"
+                                       ":text']")
+    print("==CHECK INFOS (4/4)==")
+    web_checker.insertFormNxui(driver, "//input[@id='" + web_checker.nxuiHeader()
+                               + "form.div_work.form.div_detail.form.edt_pracTpicNm"
+                                 ":input']", userName.text)
+
+    print("==PRINTING==")
+    # 실습 내용
+    str_length = 0
+    while str_length < 200:
+        time.sleep(1)
+        result_str = GetReport()
+        print(result_str)
+        web_checker.insertFormNxui(driver, "//textarea[@id='" + web_checker.nxuiHeader()
+                                   + "form.div_work.form.div_detail.form.tar_pracCont"
+                                     ":textarea']", GetReport())
+        time.sleep(1)
+        str_length_str = web_checker.getObject(driver, "//div[@id='" + web_checker.nxuiHeader()
+                                               + "form.div_work.form.div_detail.form.stt_cont"
+                                                 ":text']").text
+        str_length = int(''.join([i for i in str_length_str if i.isdigit()]))
+        print("[총 " + str(str_length) + "자]")
+
+    print("==SAVING...==")
+    # 저장
+    web_checker.clickObject(driver, "//div[@id='" + web_checker.nxuiHeader()
+                            + "form.div_work.form.div_detail.form.btn_save']")
+
+    print("==END==")
 
     web_checker.close(driver)
