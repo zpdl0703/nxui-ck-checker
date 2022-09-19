@@ -46,6 +46,9 @@ def AppendReportStr(path, fileName):
 
 if __name__ == '__main__':
     print("nxui ck checker")
+    
+    if IsWeekend():
+        sys.exit(0)
 
     file = open("info.txt", "r", encoding='utf8')
     strings = file.readlines()
