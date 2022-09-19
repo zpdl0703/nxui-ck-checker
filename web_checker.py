@@ -97,7 +97,9 @@ def login(driver, id, pw):
                         "//div[@id='mainframe.WrapFrame.form.div_login.form.div_login.form.div_loginBox.form"
                         ".btn_login:icontext']").click()
 
-    waitUntilFind(driver, (By.XPATH, "//div[@id='mainframe.login.form.btn_yes:icontext']")).click()
+    alreadyLn = waitUntilFind(driver, (By.XPATH, "//div[@id='mainframe.login.form.btn_yes:icontext']"))
+    if alreadyLn is not None:
+        alreadyLn.click()
 
 
 def insertForm(driver, selector, value):
